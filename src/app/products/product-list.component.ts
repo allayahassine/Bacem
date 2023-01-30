@@ -1,19 +1,32 @@
-import {Component} from "@angular/core"
+import {Component, OnInit} from "@angular/core"
 import { IProduct } from "./product";
-@Component
-({
+@Component({
 selector:"pm-products",
-templateUrl: `./product-list.component.html`
-
+templateUrl: `./product-list.component.html`,
+styleUrls:['./Product-list.component.css']
 })
-export class ProductListComponent
+export class ProductListComponent implements OnInit
 {
+    ngOnInit (): void {
+        this.listFilter='Cart';
+    }
    
     pageTitle : string='Product List';
     imageWidth:  number=50;
     imageMargin: number=2;
     showImage : boolean=false;
-    listFilter : string='cart';
+    // listFilter : string='cart';
+    // getter et setter chapter pour filtrer le recherche
+    private _listFilter: string = '';
+    get listFilter(): string{
+        return this._listFilter;
+    }
+    set listFilter(value:string) {
+         this._listFilter=value;
+         console.log('In Setter',value);
+         this.filterProducts=this.performFilter(value);
+    }
+filterProducts: IProduct[]= [];
     products: IProduct[]=
     [
      {
@@ -45,5 +58,20 @@ export class ProductListComponent
     toggleImage(): void 
     {
         this.showImage = !this.showImage;
+    }
+
+// ********  filterProducts pour filtrer arrow method le ***********
+
+
+    performFilter(filterBy:string):IProduct[]{
+        filterBy = filterBy.toLocaleLowerCase();
+        return this.products.filter((product: IProduct)=>
+        product.productName.toLocaleLowerCase().includes(filterBy));
+    }
+   /*  onRatingClicked(PageTitle: string){
+        
+    } */
+    onRatingClicked(message: string): void{
+        this.pageTitle='Product List'+message;
     }
 }
