@@ -1,20 +1,22 @@
-import {Component, OnInit} from "@angular/core"
+import {Component, OnDestroy, OnInit} from "@angular/core"
+import { Subscription } from "rxjs";
 import { IProduct } from "./product";
+import { ProductService } from "./product-service";
 @Component({
-selector:"pm-products",
+// selector:"pm-products",
 templateUrl: `./product-list.component.html`,
 styleUrls:['./Product-list.component.css']
 })
-export class ProductListComponent implements OnInit
+export class ProductListComponent implements OnInit,OnDestroy
 {
-    ngOnInit (): void {
-        this.listFilter='Cart';
-    }
+
    
     pageTitle : string='Product List';
     imageWidth:  number=50;
     imageMargin: number=2;
     showImage : boolean=false;
+    errorMessage: string='';
+    sub! : Subscription;
     // listFilter : string='cart';
     // getter et setter chapter pour filtrer le recherche
     private _listFilter: string = '';
@@ -29,7 +31,7 @@ export class ProductListComponent implements OnInit
 filterProducts: IProduct[]= [];
     products: IProduct[]=
     [
-     {
+     /* {
         "productId": 2,
         "productName": "Garden Cart",
         "productCode": "GDN-0023",
@@ -49,11 +51,22 @@ filterProducts: IProduct[]= [];
         "price": 8.9,
         "starRating": 4.8,
         "imageUrl": "assets/images/hammer.png"
-       } 
+       }  */
     
     ]; 
     
-
+    ngOnInit (): void {
+        // this.listFilter='Cart'; on a écrire cette ligne avant le service et le constr
+        // this.products=
+        this.sub=this.productService.getProducts().subscribe({
+            next:products => {
+                this.products = products;
+                this.filterProducts=this.products;
+            },
+            error:err => this.errorMessage = err
+        });
+        
+    }
 
     toggleImage(): void 
     {
@@ -62,7 +75,12 @@ filterProducts: IProduct[]= [];
 
 // ********  filterProducts pour filtrer arrow method le ***********
 
+constructor(private productService:ProductService){
 
+}
+    ngOnDestroy(): void {
+        throw new Error("Method not implemented.");
+    }
     performFilter(filterBy:string):IProduct[]{
         filterBy = filterBy.toLocaleLowerCase();
         return this.products.filter((product: IProduct)=>
@@ -72,6 +90,6 @@ filterProducts: IProduct[]= [];
         
     } */
     onRatingClicked(message: string): void{
-        this.pageTitle='Product List'+message;
+        this.pageTitle='Product List'+ message;
     }
 }
