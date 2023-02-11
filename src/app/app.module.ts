@@ -9,8 +9,7 @@ import { ConvertToSpacesPipe } from './shared/convert-to-space.pipe';
 import { StartComponent } from "./shared/star.component";
 import { ProductDetailComponent } from './products/product-detail.component';
 import { WelcomeComponent } from './home/welcome.component';
-import { RouterModule } from '@angular/router';
-
+import { RouterModule, Routes } from '@angular/router';
 
 @NgModule({
     // ****NgModule on déclare ici tous les component de Angular
@@ -20,20 +19,18 @@ import { RouterModule } from '@angular/router';
         AppComponent, ProductListComponent,
         ConvertToSpacesPipe,StartComponent, ProductDetailComponent,WelcomeComponent
     ],
-    bootstrap: [AppComponent],
     imports: [
-        BrowserModule, FormsModule,HttpClientModule,
-        //configuration Route: RouterModule.forRoot([])
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
         RouterModule.forRoot([
-            {path:'products',component:ProductListComponent},
-            {path:'products/id',component:ProductDetailComponent},
-            {path:'welcome',component:WelcomeComponent},
-            {path:'',redirectTo:'welcome',pathMatch:'full'},
-            {path:'**',redirectTo:'welcome',pathMatch:'full'},
-
-
+            { path: 'products', component: ProductListComponent },
+            { path: 'products/:id' , component: ProductDetailComponent },
+            { path: 'welcome', component: WelcomeComponent },
+            { path: '', redirectTo: 'welcome', pathMatch:'full' },
+            { path: '**', redirectTo: 'welcome', pathMatch:'full' }
         ])
-       
-    ]
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

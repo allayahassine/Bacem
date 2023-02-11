@@ -7,7 +7,7 @@ import { ProductService } from "./product-service";
 templateUrl: `./product-list.component.html`,
 styleUrls:['./Product-list.component.css']
 })
-export class ProductListComponent implements OnInit,OnDestroy
+export class ProductListComponent implements OnInit
 {
 
    
@@ -78,9 +78,6 @@ filterProducts: IProduct[]= [];
 constructor(private productService:ProductService){
 
 }
-    ngOnDestroy(): void {
-        throw new Error("Method not implemented.");
-    }
     performFilter(filterBy:string):IProduct[]{
         filterBy = filterBy.toLocaleLowerCase();
         return this.products.filter((product: IProduct)=>
