@@ -17,7 +17,7 @@ export class ProductListComponent implements OnInit
     showImage : boolean=false;
     errorMessage: string='';
     sub! : Subscription;
-    // listFilter : string='cart';
+    // ! listFilter : string='cart';
     // getter et setter chapter pour filtrer le recherche
     private _listFilter: string = '';
     get listFilter(): string{
